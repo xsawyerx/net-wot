@@ -10,7 +10,7 @@ use namespace::autoclean;
 has api_base_url => (
     is      => 'ro',
     isa     => 'Str',
-    default => 'http://api.mywot.com',
+    default => 'api.mywot.com',
 );
 
 has api_path => (
@@ -49,7 +49,19 @@ sub BUILD {
 }
 
 sub _create_link {
+    my $self      = shift;
+    my $version   = $self->version;
+    my $api_base  = $self->api_base_url;
+    my $api_path  = $self->api_path;
+    my $base_path = "$api_base/$version/$api_path";
+    my $target    = $self->target || $self->url;
 
+    my $link = uri(
+        path  => $base_path,
+        query => { target => $target },
+    );
+
+    return $link;
 }
 
 no Moose;

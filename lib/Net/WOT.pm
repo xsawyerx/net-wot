@@ -10,7 +10,13 @@ use namespace::autoclean;
 has api_base_url => (
     is      => 'ro',
     isa     => 'Str',
-    default => 'http://api.mywot.com/public_query2'
+    default => 'http://api.mywot.com',
+);
+
+has api_path => (
+    is      => 'ro',
+    isa     => 'Str',
+    default => 'public_query2',
 );
 
 has target => (
@@ -27,7 +33,7 @@ has url => (
 
 has version => (
     is      => 'ro',
-    isa     => 'Int',
+    isa     => 'Num',
     default => 0.4,
 );
 

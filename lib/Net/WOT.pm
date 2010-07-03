@@ -6,10 +6,11 @@ use Moose;
 use URI::FromHash 'uri';
 use namespace::autoclean;
 
+# docs are at: http://www.mywot.com/wiki/API
 has api_base_url => (
     is      => 'ro',
     isa     => 'Str',
-    default => 'http://api.mywot.com/'
+    default => 'http://api.mywot.com/public_query2'
 );
 
 has target => (
@@ -22,6 +23,12 @@ has url => (
     is  => 'ro',
     isa => 'Str',
     predicate => 'has_url',
+);
+
+has version => (
+    is      => 'ro',
+    isa     => 'Int',
+    default => 0.4,
 );
 
 sub BUILD {

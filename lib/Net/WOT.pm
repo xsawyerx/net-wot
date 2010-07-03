@@ -3,7 +3,7 @@ package Net::WOT;
 
 use Carp;
 use Moose;
-use URI::FromHash;
+use URI::FromHash 'uri';
 use namespace::autoclean;
 
 has api_base_url => (
@@ -29,6 +29,14 @@ sub BUILD {
     if ( ! $self->has_target && ! $self->has_url ) {
         croak 'target or url required';
     }
+
+    if ( $self->has_target && $self->has_url ) {
+        croak 'only target or url required, not both';
+    }
+}
+
+sub _create_link {
+
 }
 
 no Moose;

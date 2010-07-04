@@ -4,6 +4,7 @@ package Net::WOT;
 use Carp;
 use Moose;
 use URI::FromHash 'uri';
+use LWP::UserAgent;
 use namespace::autoclean;
 
 # docs are at: http://www.mywot.com/wiki/API
@@ -19,49 +20,78 @@ has api_path => (
     default => 'public_query2',
 );
 
-has target => (
-    is  => 'ro',
-    isa => 'Str',
-    predicate => 'has_target',
-);
-
-has url => (
-    is  => 'ro',
-    isa => 'Str',
-    predicate => 'has_url',
-);
-
 has version => (
     is      => 'ro',
     isa     => 'Num',
     default => 0.4,
 );
 
-sub BUILD {
-    my $self = shift;
-    if ( ! $self->has_target && ! $self->has_url ) {
-        croak 'target or url required';
-    }
+has reputations => (
+    is      => 'ro',
+    isa     => 'HashRef[Str]',
+    traits  => ['Hash'],
+    default => sub { {
+        1 => 'Trustworthiness',
+        2 => 'Vendor reliability',
+        3 => 'Privacy',
+        4 => 'Child safety',
+    } },
 
-    if ( $self->has_target && $self->has_url ) {
-        croak 'only target or url required, not both';
-    }
+    handles => {
+        get_reputation => 'get',
+    },
+);
+
+has [ qw/ trustworthiness vendor_reliability privacy child_safety / ]
+    => ( is => 'rw', isa => 'Int' );
+
+has 'useragent' => (
+    is         => 'ro',
+    isa        => 'LWP::UserAgent',
+    handles    => ['get'],
+    lazy_build => 1,
+);
+
+sub _build_useragent {
+    my $self = shift;
+    my $lwp  = LWP::UserAgent->new();
+
+    return $lwp;
 }
 
 sub _create_link {
-    my $self      = shift;
+    my ( $self, $target ) = @_;
     my $version   = $self->version;
     my $api_base  = $self->api_base_url;
     my $api_path  = $self->api_path;
     my $base_path = "$api_base/$version/$api_path";
-    my $target    = $self->target || $self->url;
 
     my $link = uri(
         path  => $base_path,
         query => { target => $target },
     );
 
-    return $link;
+    return "http://$link";
+}
+
+sub fetch_reputation {
+    my ( $self, $target ) = @_;
+    my $link     = $self->_create_link($target);
+    my $response = $self->get($link);
+
+    $response->is_success or return;
+}
+
+sub get_details {
+    my $self  = shift;
+    my @attrs = qw/ trustworthiness vendor_reliability privacy child_safety /;
+    my %attrs = ();
+
+    foreach my $attr (@attrs) {
+        $attrs{$attr} = $self->$attr || q{};
+    }
+
+    return %attrs;
 }
 
 no Moose;

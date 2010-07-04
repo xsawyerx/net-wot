@@ -3,6 +3,7 @@ package Net::WOT;
 
 use Carp;
 use Moose;
+use XML::Twig;
 use URI::FromHash 'uri';
 use LWP::UserAgent;
 use namespace::autoclean;
@@ -31,10 +32,10 @@ has reputations => (
     isa     => 'HashRef[Str]',
     traits  => ['Hash'],
     default => sub { {
-        1 => 'Trustworthiness',
-        2 => 'Vendor reliability',
-        3 => 'Privacy',
-        4 => 'Child safety',
+        1 => 'trustworthiness',
+        2 => 'vendor_reliability',
+        3 => 'privacy',
+        4 => 'child_safety',
     } },
 
     handles => {
@@ -42,7 +43,7 @@ has reputations => (
     },
 );
 
-has [ qw/ trustworthiness vendor_reliability privacy child_safety / ]
+has [ qw/ trustworthiness vendor_reliability privacy child_safety reputation / ]
     => ( is => 'rw', isa => 'Int' );
 
 has 'useragent' => (
@@ -79,7 +80,26 @@ sub fetch_reputation {
     my $link     = $self->_create_link($target);
     my $response = $self->get($link);
 
+
     $response->is_success or return;
+
+    # <?xml version="1.0" encoding="UTF-8"?>
+    # <query target="google.com">
+    #     <application c="93" name="0" r="94"/>
+    #     <application c="92" name="1" r="95"/>
+    #     <application c="88" name="2" r="93"/>
+    #     <application c="88" name="4" r="93"/>
+    # </query>
+
+    my $twig = XML::Twig->new();
+    $twig->parse( $response->content );
+
+    my @children = $twig->root->children;
+    foreach my $child (@children) {
+        my $c = $child->att('c');
+    }
+
+    return 1;
 }
 
 sub get_details {

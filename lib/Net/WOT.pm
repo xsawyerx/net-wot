@@ -40,9 +40,9 @@ has components => (
     isa     => 'HashRef[Str]',
     traits  => ['Hash'],
     default => sub { {
-        1 => 'trustworthiness',
-        2 => 'vendor_reliability',
-        3 => 'privacy',
+        0 => 'trustworthiness',
+        1 => 'vendor_reliability',
+        2 => 'privacy',
         4 => 'child_safety',
     } },
 

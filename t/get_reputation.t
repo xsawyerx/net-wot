@@ -13,9 +13,9 @@ isa_ok( $wot, 'Net::WOT' );
 my $xml = '<?xml version="1.0" encoding="UTF-8"?>' .
           '<query target="example.com">'           .
           '<application name="0" r="93" c="65"/>'  .
-          '<application name="1" r="92" c="64"/>'  .
-          '<application name="2" r="91" c="63"/>'  .
-          '<application name="4" r="90" c="62"/>'  .
+          '<application name="1" r="72" c="64"/>'  .
+          '<application name="2" r="51" c="63"/>'  .
+          '<application name="4" r="30" c="62"/>'  .
           '</query>';
 
 {
@@ -35,21 +35,21 @@ my %expected_results = (
     },
 
     vendor_reliability => {
-        score       => 92,
+        score       => 72,
         confidence  => 64,
-        description => 'excellent',
+        description => 'good',
     },
 
     privacy => {
-        score       => 91,
+        score       => 51,
         confidence  => 63,
-        description => 'excellent',
+        description => 'unsatisfactory',
     },
 
     child_safety => {
-        score       => 90,
+        score       => 30,
         confidence  => 62,
-        description => 'excellent',
+        description => 'poor',
     },
 );
 

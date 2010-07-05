@@ -8,6 +8,14 @@ use URI::FromHash 'uri';
 use LWP::UserAgent;
 use namespace::autoclean;
 
+# useragent to work with
+has 'useragent' => (
+    is         => 'ro',
+    isa        => 'LWP::UserAgent',
+    handles    => { ua_get => 'get' },
+    lazy_build => 1,
+);
+
 # docs are at: http://www.mywot.com/wiki/API
 has api_base_url => (
     is      => 'ro',
@@ -44,15 +52,47 @@ has components => (
     },
 );
 
+has reputations => (
+    is      => 'ro',
+    isa     => 'HashRef[Str]',
+    traits  => ['Hash'],
+    default => sub { {
+        80 => 'excellent',
+        60 => 'good',
+        40 => 'unsatisfactory',
+        20 => 'poor',
+         0 => 'very poor',
+    } },
+
+    handles => {
+        get_reputation  => 'get',
+        all_reputations => 'values',
+    },
+);
+
+has confidence => (
+    is      => 'ro',
+    isa     => 'HashRef[Str]',
+    traits  => ['Hash'],
+    default => sub { {
+        45 => '5',
+        34 => '4',
+        23 => '3',
+        12 => '2',
+         6 => '1',
+         0 => '0',
+    } },
+
+    handles => {
+        get_confidence => 'get',
+        all_confidence => 'values',
+    },
+);
+
+has maximum_confidence_level => ( is => 'ro', isa => 'Int', default => 5 );
+
 has [ qw/ trustworthiness vendor_reliability privacy child_safety reputation / ]
     => ( is => 'rw', isa => 'Int' );
-
-has 'useragent' => (
-    is         => 'ro',
-    isa        => 'LWP::UserAgent',
-    handles    => ['get'],
-    lazy_build => 1,
-);
 
 sub _build_useragent {
     my $self = shift;
@@ -79,8 +119,7 @@ sub _create_link {
 sub fetch_reputation {
     my ( $self, $target ) = @_;
     my $link     = $self->_create_link($target);
-    my $response = $self->get($link);
-
+    my $response = $self->ua_get($link);
 
     $response->is_success or return;
 

@@ -99,10 +99,12 @@ foreach my $comp ( qw/
         child_safety
         reputation
     / ) {
-    foreach my $item ( qw/ score confidence description / ) {
+    foreach my $item ( qw/ score confidence / ) {
         my $attr_name = "${comp}_${item}";
         has $attr_name => ( is => 'rw', isa => 'Int' );
     }
+
+    has "${comp}_description" => ( is => 'rw', isa => 'Str' );
 }
 
 sub _build_useragent {
@@ -171,6 +173,15 @@ sub get_reputation {
         $self->$conf_attr($confidence);
 
         my $desc_attr = $self->get_component_name($component) . '_description';
+        foreach my $reputation_level ( $self->get_reputation_levels ) {
+            if ( $reputation >= $reputation_level ) {
+                $self->$desc_attr(
+                    $self->get_reputation_description($reputation_level)
+                );
+
+                last;
+            }
+        }
     }
 
     return 1;

@@ -162,6 +162,8 @@ sub get_reputation {
         my $confidence = $child->att('c');
         my $reputation = $child->att('r');
 
+        my $component_name = $self->get_component_name($component);
+
         # component: 0
         # confidence: 34
         # reputation: 30
@@ -169,13 +171,13 @@ sub get_reputation {
         # trustworthiness_description
         # trustworthiness_confidence
 
-        my $score_attr = $self->get_component_name($component) . '_score';
+        my $score_attr = "${component_name}_score";
         $self->$score_attr($reputation);
 
-        my $conf_attr = $self->get_component_name($component) . '_confidence';
+        my $conf_attr = "${component_name}_confidence";
         $self->$conf_attr($confidence);
 
-        my $desc_attr = $self->get_component_name($component) . '_description';
+        my $desc_attr = "${component_name}_description";
         foreach my $reputation_level ( $self->get_reputation_levels ) {
             if ( $reputation >= $reputation_level ) {
                 $self->$desc_attr(

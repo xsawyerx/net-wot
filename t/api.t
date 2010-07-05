@@ -3,24 +3,10 @@
 use strict;
 use warnings;
 
-use Test::More tests => 5;
-use Test::Exception;
+use Test::More tests => 1;
 
 use Net::WOT;
 
-my $wot;
+my $wot = Net::WOT->new;
+isa_ok( $wot, 'Net::WOT' );
 
-throws_ok { Net::WOT->new() } qr/^target or url required/,
-    'requiring target or url';
-
-lives_ok {
-    $wot = Net::WOT->new( target => 'wha' );
-    isa_ok( $wot, 'Net::WOT' );
-    $wot = Net::WOT->new( url    => 'wah' );
-    isa_ok( $wot, 'Net::WOT' );
-} 'created using either target or url';
-
-throws_ok {
-    Net::WOT->new( target => 'a', url => 'b' )
-} qr/^only target or url required, not both/,
-    'providing both target and url';

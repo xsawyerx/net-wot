@@ -69,7 +69,7 @@ foreach my $component (@items) {
 
         if ( $value =~ /^\d+$/ ) {
             # check number
-            ok_cmp( $value, '==', $wot->$method, "$item for $component" );
+            cmp_ok( $value, '==', $wot->$method, "$item for $component" );
         } else {
             # check string
             is( $value, $wot->$method, "$item for $component" );

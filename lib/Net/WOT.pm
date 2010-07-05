@@ -27,7 +27,7 @@ has version => (
     default => 0.4,
 );
 
-has reputations => (
+has components => (
     is      => 'ro',
     isa     => 'HashRef[Str]',
     traits  => ['Hash'],
@@ -39,7 +39,8 @@ has reputations => (
     } },
 
     handles => {
-        get_reputation => 'get',
+        get_component  => 'get',
+        all_components => 'values',
     },
 );
 
@@ -104,14 +105,13 @@ sub fetch_reputation {
 
 sub get_details {
     my $self  = shift;
-    my @attrs = qw/ trustworthiness vendor_reliability privacy child_safety /;
-    my %attrs = ();
+    my %comps = ();
 
-    foreach my $attr (@attrs) {
-        $attrs{$attr} = $self->$attr || q{};
+    foreach my $component ( $self->all_components ) {
+        $comps{$component} = $self->$component || q{};
     }
 
-    return %attrs;
+    return %comps;
 }
 
 no Moose;

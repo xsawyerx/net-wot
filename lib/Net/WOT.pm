@@ -66,6 +66,7 @@ has reputation_levels => (
 
     handles => {
         get_reputation_description => 'get',
+        get_reputation_levels      => 'keys',
     },
 );
 
@@ -90,8 +91,19 @@ has confidence_levels => (
 
 has maximum_confidence_level => ( is => 'ro', isa => 'Int', default => 5 );
 
-has [ qw/ trustworthiness vendor_reliability privacy child_safety reputation / ]
-    => ( is => 'rw', isa => 'Int' );
+# automatically create all reputation component attributes
+foreach my $comp ( qw/
+        trustworthiness
+        vendor_reliability
+        privacy
+        child_safety
+        reputation
+    / ) {
+    foreach my $item ( qw/ score confidence description / ) {
+        my $attr_name = "${comp}_${item}";
+        has $attr_name => ( is => 'rw', isa => 'Int' );
+    }
+}
 
 sub _build_useragent {
     my $self = shift;
@@ -143,7 +155,22 @@ sub get_reputation {
 
     my @children = $twig->root->children;
     foreach my $child (@children) {
-        my $c = $child->att('c');
+        # checking a specific query
+        my $component  = $child->att('name');
+        my $confidence = $child->att('c');
+        my $reputation = $child->att('r');
+
+        # component: 0
+        # confidence: 34
+        # reputation: 30
+        # trustworthiness_reputation
+        # trustworthiness_description
+        # trustworthiness_confidence
+
+        my $conf_attr = $self->get_component_name($component) . '_confidence';
+        $self->$conf_attr($confidence);
+
+        my $desc_attr = $self->get_component_name($component) . '_description';
     }
 
     return 1;

@@ -96,7 +96,6 @@ foreach my $comp ( qw/
         vendor_reliability
         privacy
         child_safety
-        reputation
     / ) {
     foreach my $item ( qw/ score confidence / ) {
         my $attr_name = "${comp}_$item";
@@ -232,7 +231,78 @@ Fully object oriented, nothing is exported.
 
 =head1 ATTRIBUTES
 
-Will document soon.
+These are attributes that can be set during the initialization of the WOT
+object. The syntax is:
+
+    my $wot = Net::WOT->new(
+        attr1 => 'value1',
+        attr2 => 'value2',
+    );
+
+=head2 api_base_url
+
+The basic url for the WOT API. Default: B<api.mywot.com>.
+
+=head2 api_path
+
+The path for the WOT API request. Default: B<public_query2>.
+
+=head2 version
+
+Version of the WOT API. Default: B<0.4>.
+
+These are subroutines you probably don't want to change but can still read from.
+
+B<Note:> Changing these might compromise the integrity of your information,
+consider them as read-only.
+
+=head2 trustworthiness_score
+
+The trustworthiness score.
+
+=head2 trustworthiness_confidence
+
+The trustworthiness confidence.
+
+=head2 trustworthiness_description
+
+The trustworthiness description.
+
+=head2 vendor_reliability_score
+
+The vendor reliability score.
+
+=head2 vendor_reliability_confidence
+
+The vendor reliability confidence.
+
+=head2 vendor_reliability_description
+
+The vendor reliability description.
+
+=head2 privacy_score
+
+The privacy score.
+
+=head2 privacy_confidence
+
+The privacy confidence.
+
+=head2 privacy_description
+
+The privacy description.
+
+=head2 child_safety_score
+
+The child safety score.
+
+=head2 child_safety_confidence
+
+The child safety confidence.
+
+=head2 child_safety_description
+
+The child safety description.
 
 =head1 SUBROUTINES/METHODS
 

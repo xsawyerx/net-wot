@@ -169,6 +169,9 @@ sub get_reputation {
         # trustworthiness_description
         # trustworthiness_confidence
 
+        my $score_attr = $self->get_component_name($component) . '_score';
+        $self->$score_attr($reputation);
+
         my $conf_attr = $self->get_component_name($component) . '_confidence';
         $self->$conf_attr($confidence);
 

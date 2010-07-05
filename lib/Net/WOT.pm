@@ -4,7 +4,6 @@ package Net::WOT;
 use Carp;
 use Moose;
 use XML::Twig;
-use URI::FromHash 'uri';
 use LWP::UserAgent;
 use namespace::autoclean;
 
@@ -116,17 +115,12 @@ sub _build_useragent {
 
 sub _create_link {
     my ( $self, $target ) = @_;
-    my $version   = $self->version;
-    my $api_base  = $self->api_base_url;
-    my $api_path  = $self->api_path;
-    my $base_path = "$api_base/$version/$api_path";
+    my $version  = $self->version;
+    my $api_base = $self->api_base_url;
+    my $api_path = $self->api_path;
+    my $link     = "http://$api_base/$version/$api_path?target=$target";
 
-    my $link = uri(
-        path  => $base_path,
-        query => { target => $target },
-    );
-
-    return "http://$link";
+    return $link;
 }
 
 # <?xml version="1.0" encoding="UTF-8"?>

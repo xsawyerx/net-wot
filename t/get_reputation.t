@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 15;
+use Test::More tests => 16;
 
 use Net::WOT;
 
@@ -28,7 +28,7 @@ my $xml = '<?xml version="1.0" encoding="UTF-8"?>' .
 }
 
 my %expected_results = (
-    trustwortiness => {
+    trustworthiness => {
         score       => 93,
         confidence  => 65,
         description => 'excellent',

@@ -62,8 +62,8 @@ is_deeply(
 
 my @items = qw/ trustworthiness vendor_reliability privacy child_safety /;
 
-foreach my $component ( keys %expected_results ) {
-    foreach my $item (@items) {
+foreach my $component (@items) {
+    foreach my $item ( keys %{ $expected_results{$component} } ) {
         my $value  = $expected_results{$component}{$item};
         my $method = "${component}_${item}";
 

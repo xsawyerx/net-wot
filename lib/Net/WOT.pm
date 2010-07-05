@@ -7,6 +7,8 @@ use XML::Twig;
 use LWP::UserAgent;
 use namespace::autoclean;
 
+our $VERSION = '0.02';
+
 # useragent to work with
 has 'useragent' => (
     is         => 'ro',

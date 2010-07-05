@@ -55,17 +55,16 @@ my %expected_results = (
 
 is_deeply(
     \%expected_results,
-    \$wot->get_reputation('example.com'),
+    { $wot->get_reputation('example.com') },
     'correct reputations',
 );
-
 
 my @items = qw/ trustworthiness vendor_reliability privacy child_safety /;
 
 foreach my $component (@items) {
     foreach my $item ( keys %{ $expected_results{$component} } ) {
         my $value  = $expected_results{$component}{$item};
-        my $method = "${component}_${item}";
+        my $method = "${component}_$item";
 
         if ( $value =~ /^\d+$/ ) {
             # check number

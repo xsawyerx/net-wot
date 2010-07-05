@@ -18,7 +18,8 @@ isa_ok( $wot, 'Net::WOT' );
         my ( $self, $target ) = @_;
         isa_ok( $self, 'Net::WOT' );
         is( $target, $t_target, 'correct target sent to _create_link' );
+        exit;
     };
 }
 
-$wot->fetch_reputation($t_target);
+$wot->get_reputation($t_target);

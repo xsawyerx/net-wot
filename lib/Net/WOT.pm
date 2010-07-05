@@ -47,8 +47,8 @@ has components => (
     } },
 
     handles => {
-        get_component_name       => 'get',
-        get_all_components_names => 'values',
+        get_component_name      => 'get',
+        get_all_component_names => 'values',
     },
 );
 
@@ -100,7 +100,7 @@ foreach my $comp ( qw/
         reputation
     / ) {
     foreach my $item ( qw/ score confidence / ) {
-        my $attr_name = "${comp}_${item}";
+        my $attr_name = "${comp}_$item";
         has $attr_name => ( is => 'rw', isa => 'Int' );
     }
 
@@ -184,7 +184,23 @@ sub get_reputation {
         }
     }
 
-    return 1;
+    return $self->_create_reputation_hash;
+}
+
+sub _create_reputation_hash {
+    my $self = shift;
+    my %hash = ();
+
+    foreach my $component ( $self->get_all_component_names ) {
+        foreach my $item ( qw/ score description confidence / ) {
+            my $attr  = "${component}_$item";
+            my $value = $self->$attr;
+
+            $value and $hash{$component}{$item} = $value;
+        }
+    }
+
+    return %hash;
 }
 
 no Moose;

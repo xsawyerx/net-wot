@@ -55,7 +55,7 @@ my %expected_results = (
 
 is_deeply(
     \%expected_results,
-    \$wot->get_reputations('example.com'),
+    \$wot->get_reputation('example.com'),
     'correct reputations',
 );
 

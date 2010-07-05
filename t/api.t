@@ -7,7 +7,9 @@ use Test::More tests => 3;
 
 use Net::WOT;
 
-my $wot = Net::WOT->new;
+my $wot      = Net::WOT->new;
+my $t_target = 'test_target';
+
 isa_ok( $wot, 'Net::WOT' );
 
 {
@@ -15,8 +17,8 @@ isa_ok( $wot, 'Net::WOT' );
     *Net::WOT::_create_link = sub {
         my ( $self, $target ) = @_;
         isa_ok( $self, 'Net::WOT' );
-        is( $target, 'test_target', 'correct target sent to _create_link' );
+        is( $target, $t_target, 'correct target sent to _create_link' );
     };
 }
 
-$wot->fetch_reputation('test_target');
+$wot->fetch_reputation($t_target);

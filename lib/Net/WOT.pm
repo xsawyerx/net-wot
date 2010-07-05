@@ -177,8 +177,10 @@ sub get_reputation {
         my $conf_attr = "${component_name}_confidence";
         $self->$conf_attr($confidence);
 
-        my $desc_attr = "${component_name}_description";
-        foreach my $reputation_level ( $self->get_reputation_levels ) {
+        my @rep_levels = sort { $b <=> $a } $self->get_reputation_levels;
+        my $desc_attr  = "${component_name}_description";
+
+        foreach my $reputation_level (@rep_levels) {
             if ( $reputation >= $reputation_level ) {
                 $self->$desc_attr(
                     $self->get_reputation_description($reputation_level)

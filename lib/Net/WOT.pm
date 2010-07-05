@@ -236,7 +236,11 @@ Will document soon.
 
 =head1 SUBROUTINES/METHODS
 
-Will document soon.
+=head2 get_reputation
+
+Get reputation.
+
+Will document the rest soon.
 
 =head1 AUTHOR
 

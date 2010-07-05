@@ -115,23 +115,31 @@ sub _create_link {
     return "http://$link";
 }
 
-sub get_reputation {
+# <?xml version="1.0" encoding="UTF-8"?>
+# <query target="google.com">
+#     <application c="93" name="0" r="94"/>
+#     <application c="92" name="1" r="95"/>
+#     <application c="88" name="2" r="93"/>
+#     <application c="88" name="4" r="93"/>
+# </query>
+
+sub _request_wot {
     my ( $self, $target ) = @_;
     my $link     = $self->_create_link($target);
     my $response = $self->ua_get($link);
+    my $status   = $response->status_line;
 
-    $response->is_success or return;
+    $response->is_success or croak "Can't get reputation: $status\n";
 
-    # <?xml version="1.0" encoding="UTF-8"?>
-    # <query target="google.com">
-    #     <application c="93" name="0" r="94"/>
-    #     <application c="92" name="1" r="95"/>
-    #     <application c="88" name="2" r="93"/>
-    #     <application c="88" name="4" r="93"/>
-    # </query>
+    return $response->content;
+}
 
+sub get_reputation {
+    my ( $self, $target ) = @_;
+    my $xml  = $self->_request_wot($target);
     my $twig = XML::Twig->new();
-    $twig->parse( $response->content );
+
+    $twig->parse($xml);
 
     my @children = $twig->root->children;
     foreach my $child (@children) {
@@ -139,17 +147,6 @@ sub get_reputation {
     }
 
     return 1;
-}
-
-sub get_details {
-    my $self  = shift;
-    my %comps = ();
-
-    foreach my $component ( $self->all_components ) {
-        $comps{$component} = $self->$component || q{};
-    }
-
-    return %comps;
 }
 
 no Moose;

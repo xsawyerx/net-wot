@@ -88,8 +88,6 @@ has confidence_levels => (
     },
 );
 
-has maximum_confidence_level => ( is => 'ro', isa => 'Int', default => 5 );
-
 # automatically create all reputation component attributes
 foreach my $comp ( qw/
         trustworthiness

@@ -47,12 +47,12 @@ has components => (
     } },
 
     handles => {
-        get_component  => 'get',
-        all_components => 'values',
+        get_component_name       => 'get',
+        get_all_components_names => 'values',
     },
 );
 
-has reputations => (
+has reputation_levels => (
     is      => 'ro',
     isa     => 'HashRef[Str]',
     traits  => ['Hash'],
@@ -65,12 +65,11 @@ has reputations => (
     } },
 
     handles => {
-        get_reputation  => 'get',
-        all_reputations => 'values',
+        get_reputation_description => 'get',
     },
 );
 
-has confidence => (
+has confidence_levels => (
     is      => 'ro',
     isa     => 'HashRef[Str]',
     traits  => ['Hash'],
@@ -84,8 +83,8 @@ has confidence => (
     } },
 
     handles => {
-        get_confidence => 'get',
-        all_confidence => 'values',
+        get_confidence_level      => 'get',
+        get_all_confidence_levels => 'values',
     },
 );
 
@@ -116,7 +115,7 @@ sub _create_link {
     return "http://$link";
 }
 
-sub fetch_reputation {
+sub get_reputation {
     my ( $self, $target ) = @_;
     my $link     = $self->_create_link($target);
     my $response = $self->ua_get($link);

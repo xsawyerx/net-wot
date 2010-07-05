@@ -182,9 +182,10 @@ sub get_reputation {
 
         foreach my $reputation_level (@rep_levels) {
             if ( $reputation >= $reputation_level ) {
-                $self->$desc_attr(
-                    $self->get_reputation_description($reputation_level)
-                );
+                my $rep_desc
+                    = $self->get_reputation_description($reputation_level);
+
+                $self->$desc_attr($rep_desc);
 
                 last;
             }

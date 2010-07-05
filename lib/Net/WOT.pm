@@ -310,7 +310,45 @@ The child safety description.
 
 Get reputation.
 
-Will document the rest soon.
+=head2 ua_get
+
+This is a shorthand to reach an internal useragent I<get> command. Why would you
+want it? Who knows? It's there.
+
+=head2 get_component_name
+
+Retrieves a component name from the index number of it. For example:
+
+    my $name = $wot->get_component_name(2);
+    # $name = 'privacy'
+
+=head2 get_all_component_names
+
+Returns a list of all component names.
+
+=head2 get_reputation_description
+
+Retrieves a reputation description from a certain level threshold. For example:
+
+    my $threshold   = 60;
+    my $description = $wot->get_reputation_description;
+
+    # $description = 'good'
+
+=head2 get_reputation_levels
+
+Returns a list of all reputation levels.
+
+=head2 get_confidence_level
+
+Retrieves a confidence level from a certain threshold. For example:
+
+    my $confidence_level = $wot->get_confidence_level(12);
+    # $confidence_level = '2'
+
+=head2 get_all_confidence_levels
+
+Returns a list of all confidence levels.
 
 =head1 AUTHOR
 

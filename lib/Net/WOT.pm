@@ -209,3 +209,56 @@ no Moose;
 __PACKAGE__->meta->make_immutable;
 
 1;
+
+__END__
+
+=head1 SYNOPSIS
+
+This module provides an interface to I<Web of Trust>'s API.
+
+    use Net::WOT;
+
+    my $wot = Net::WOT->new;
+
+    # get all details
+    my %all_details = $wot->get_reputation('example.com');
+
+    # use specific details after get_reputations() method was called
+    print $wot->privacy_score, "\n";
+
+=head1 EXPORT
+
+Fully object oriented, nothing is exported.
+
+=head1 ATTRIBUTES
+
+Will document soon.
+
+=head1 SUBROUTINES/METHODS
+
+Will document soon.
+
+=head1 AUTHOR
+
+Sawyer X, C<< <xsawyerx at cpan.org> >>
+
+=head1 BUGS
+
+Please report bugs and other issues on the bugtracker:
+
+L<http://github.com/xsawyerx/net-wot/issues>
+
+=head1 SUPPORT
+
+Hopefully.
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright 2010 Sawyer X.
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of either: the GNU General Public License as published
+by the Free Software Foundation; or the Artistic License.
+
+See http://dev.perl.org/licenses/ for more information.
+
